@@ -1,7 +1,16 @@
 from keystone import *
 from unicorn import *
 from unicorn.arm64_const import *
-#from capstone import *
+import argparse
+
+### parsing arguments
+aparser = argparse.ArgumentParser(description="Arm opcode executor. (Support only arm64)")
+aparser.add_argument("--file","-f",default="arm64.asm",help="Name name for assembly file")
+aparser.add_argument("--debug","-d",default=False,help="for verborse set flag to True")
+arg = vars(aparser.parse_args())
+
+dosya = arg["file"]
+dF = arg["debug"]
 
 
 ### Setup engines
@@ -20,10 +29,10 @@ mu = Uc(UC_ARCH_ARM64, UC_MODE_ARM)
 
 
 ### setup shellcode
-myasm = open("arm64.asm").read()
+myasm = open(dosya).read()
 asm_tuple = ks.asm(myasm)
 asm_code = b"".join(x.to_bytes(1,'big') for x in asm_tuple[0])
-print(f"Compiled shellcode : {str(asm_code)}")
+
 
 
 
@@ -40,12 +49,20 @@ def hook_code(uc, address, size, user_data):
     print(">>> Tracing instruction at 0x%x, instruction size = 0x%x" %(address, size))
 
 
+def verborse(msg):
+    if dF:
+        print(f"[DEBUG] -> {msg}")
+
+
 
 
 baseAddress = 0x1000000
 stackAddress = 0x1001000
 
 
+
+### Get İnfo if debug setted
+verborse(f"Compiled shellcode : {str(asm_code)}")
 
 
 
