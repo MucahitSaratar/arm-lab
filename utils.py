@@ -69,7 +69,7 @@ class Emulate():
         ### init for emulation
         for i in nenereye:
             self.verborse(f"Register setted to {i[1]}")
-            self.mu.reg_write(i[0],0x20)
+            self.mu.reg_write(i[0],i[1])
             #self.mu.reg_write(UC_ARM64_REG_X0,0x21)
 
     def trig(self):
