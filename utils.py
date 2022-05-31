@@ -35,7 +35,7 @@ class Emulate():
 
 
     def hook_code(self,uc, address, size, user_data):
-        print(">>> Tracing instruction at 0x%x, instruction size = 0x%x" %(address, size))
+        self.verborse(">>> Tracing instruction at 0x%x, instruction size = 0x%x" %(address, size))
 
 
     def verborse(self,msg):
@@ -73,7 +73,7 @@ class Emulate():
             #self.mu.reg_write(UC_ARM64_REG_X0,0x21)
 
     def trig(self):
-        print("starting emulation...")
+        self.verborse("starting emulation...")
         try:
             self.mu.emu_start(self.baseAddress, self.baseAddress + len(self.asm_code))
         except UcError as e:
